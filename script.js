@@ -9,31 +9,30 @@ server.options('/', (req, res)=>{
     req.status(200).json({msg: "Funcionando com sucesso."})
 })
 
-server.post('/logs', (req, res) =>{
-    const {mensagem, aluno} = req.body
-    fs.readFile('logs.txt', 'utf-8', (err, data) => {
-        if (err){
-            res.status(500).json({erro:err})
-        } else {
-            const lista = JSON.parse(data)
-            const adicionarLog = {
-                id: uuidv4(),
-                mensagem,
-                hora: Date.now().toString(),
-                aluno
-            }
+//Edite as informações aqui
+const mensagem = "O loko";
+const aluno = "Brunor";
+const id = uuidv4().toString();
+const horario = Date.now().toString();
+const mensagemFinal = `\nID: ${id}, Horário: ${horario}, Aluno: ${aluno} - "${mensagem}"`;
 
-            lista.push(adicionarLog)
+//Ler logs.txt
+fs.readFile('logs.txt', 'utf-8', (err, data) =>{
+    if (err){
+        console.error("Erro ao ler logs", err);
+        return;
+    }
 
-            fs.writeFile('./logs.txt', JSON.stringify(lista, null, 2), (err) =>{
-                if (err){
-                    res.status(500).json({erro:err})
-                } else {
-                    res.status(201).json(adicionarLog)
-                }
-            })
-        }
-    })
+    console.log("Conteúdo nos Logs:", data);
+})
+
+//Escrever no log
+fs.writeFile('logs.txt', mensagemFinal, 'utf-8', (err) =>{
+    if (err){
+        console.error("Erro ao adicionar mensagem.", err);
+        return;
+    }
+    console.log("Mensagem adicionada ao Log!");
 })
 
 server.listen(8080, () => {
