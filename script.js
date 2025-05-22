@@ -2,6 +2,12 @@ import express from 'express';
 import fs from 'fs';
 import { v4 as uuidv4 } from 'uuid';
 
+/*
+COMO USAR:
+Inicie o servidor com o Code Runner, e entre na página
+http://localhost:8080/logs?aluno=(aluno)&mensagem=(mensagem)
+*/
+
 const server = express()
 server.use(express.json())
 
@@ -9,7 +15,7 @@ server.options('/', (req, res)=>{
     req.status(200).json({msg: "Funcionando com sucesso."})
 })
 
-//Edite as informações aqui
+//Função de criar um "log"
 function atualizarLog(aluno, mensagem){
     const id = uuidv4().toString();
     const horario = new Date();
@@ -25,10 +31,7 @@ fs.readFile('logs.txt', 'utf-8', (err, data) =>{
     console.log("Conteúdo nos Logs:", data);
 })
 
-/* Crie uma rota /logs que receba o nome do aluno no corpo da requisição, gere o ID e registre a mensagem no arquivo logs.txt usando a função criada.
-Retorne o ID gerado e uma mensagem de sucesso.
-Faça um commit após implementar essa rota. */
-
+//Atualizar logs
 server.get('/logs', (req, res) => {
     const mensagem = atualizarLog(String(req.query.aluno), String(req.query.mensagem))
         res.send(`Log atualizado com sucesso! ID: ${mensagem}`)
@@ -43,6 +46,7 @@ server.get('/logs', (req, res) => {
     })
 })
 
+//Server ouvindo
 server.listen(8080, () => {
     console.log('Servidor ouvindo na porta 8080')
   })
