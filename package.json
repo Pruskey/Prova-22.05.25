@@ -1,0 +1,24 @@
+{
+  "name": "prova-22.05.25",
+  "version": "1.0.0",
+  "description": "Prova",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Pruskey/Prova-22.05.25.git"
+  },
+  "author": "Bruno Dal Prá",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Pruskey/Prova-22.05.25/issues"
+  },
+  "homepage": "https://github.com/Pruskey/Prova-22.05.25#readme",
+  "dependencies": {
+    "express": "^5.1.0",
+    "fs-js": "^1.0.6",
+    "uuid": "^11.1.0"
+  }
+}
