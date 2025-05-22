@@ -35,6 +35,12 @@ fs.writeFile('logs.txt', mensagemFinal, 'utf-8', (err) =>{
     console.log("Mensagem adicionada ao Log!");
 })
 
+/*Crie uma rota /logs que receba o nome do aluno no corpo da requisição, gere o ID e registre a mensagem no arquivo logs.txt usando a função criada.
+Retorne o ID gerado e uma mensagem de sucesso.
+Faça um commit após implementar essa rota.
+*/
+
+
 server.listen(8080, () => {
     console.log('Servidor ouvindo na porta 8080')
   })
