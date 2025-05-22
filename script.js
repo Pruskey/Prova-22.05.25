@@ -10,12 +10,11 @@ server.options('/', (req, res)=>{
 })
 
 //Edite as informações aqui
-const mensagem = "O loko";
-const aluno = "Brunor";
-const id = uuidv4().toString();
-const horario = Date.now().toString();
-const mensagemFinal = `\nID: ${id}, Horário: ${horario}, Aluno: ${aluno} - "${mensagem}"`;
-
+function atualizarLog(aluno, mensagem){
+    const id = uuidv4().toString();
+    const horario = new Date();
+    return `ID: ${id}, Horário: ${horario}, Aluno: ${aluno} - "${mensagem}"\r\n`
+}
 //Ler logs.txt
 fs.readFile('logs.txt', 'utf-8', (err, data) =>{
     if (err){
@@ -26,20 +25,23 @@ fs.readFile('logs.txt', 'utf-8', (err, data) =>{
     console.log("Conteúdo nos Logs:", data);
 })
 
-//Escrever no log
-fs.writeFile('logs.txt', mensagemFinal, 'utf-8', (err) =>{
+/* Crie uma rota /logs que receba o nome do aluno no corpo da requisição, gere o ID e registre a mensagem no arquivo logs.txt usando a função criada.
+Retorne o ID gerado e uma mensagem de sucesso.
+Faça um commit após implementar essa rota. */
+
+server.get('/logs', (req, res) => {
+    const mensagem = atualizarLog(String(req.query.aluno), String(req.query.mensagem))
+        res.send(`Log atualizado com sucesso! ID: ${mensagem}`)
+
+        //Escrever no log
+    fs.appendFile('logs.txt', mensagem, 'utf-8', (err) =>{
     if (err){
         console.error("Erro ao adicionar mensagem.", err);
         return;
     }
     console.log("Mensagem adicionada ao Log!");
+    })
 })
-
-/*Crie uma rota /logs que receba o nome do aluno no corpo da requisição, gere o ID e registre a mensagem no arquivo logs.txt usando a função criada.
-Retorne o ID gerado e uma mensagem de sucesso.
-Faça um commit após implementar essa rota.
-*/
-
 
 server.listen(8080, () => {
     console.log('Servidor ouvindo na porta 8080')
