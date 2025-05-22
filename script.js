@@ -9,16 +9,33 @@ server.options('/', (req, res)=>{
     req.status(200).json({msg: "Funcionando com sucesso."})
 })
 
-function adicionarMensagem(mensagem, aluno){
-    fs.writeFile('./logs.txt', content, err =>{
+server.post('/logs', (req, res) =>{
+    const {mensagem, aluno} = req.body
+    fs.readFile('logs.txt', 'utf-8', (err, data) => {
         if (err){
-            console.error(err);
+            res.status(500).json({erro:err})
         } else {
-            console.log("arquivo escrito com sucesso");
+            const lista = JSON.parse(data)
+            const adicionarLog = {
+                id: uuidv4(),
+                mensagem,
+                hora: Date.now().toString(),
+                aluno
+            }
+
+            lista.push(adicionarLog)
+
+            fs.writeFile('./logs.txt', JSON.stringify(lista, null, 2), (err) =>{
+                if (err){
+                    res.status(500).json({erro:err})
+                } else {
+                    res.status(201).json(adicionarLog)
+                }
+            })
         }
     })
-}
+})
 
-server.listen(8000, () => {
-    console.log('Servidor ouvindo na porta 8000')
+server.listen(8080, () => {
+    console.log('Servidor ouvindo na porta 8080')
   })
